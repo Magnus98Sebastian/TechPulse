@@ -8,7 +8,7 @@
 
 | Haupt-Feed | Repository Suche | Lesezeichen |
 |:---------------------------:|:----------------:|:--------------------:|
-| *(<img width="250" alt="Screenshot_20260924_155454_TechPulse" src="https://github.com/user-attachments/assets/9e12c2c0-ddcc-4a2d-b256-4729560237fe" />)* | *(<img width="250" alt="7931" src="https://github.com/user-attachments/assets/2c13aa5e-c6da-4450-a9ac-4915348994df" />)* | *(<img width="250" alt="7935" src="https://github.com/user-attachments/assets/103ac143-b309-4586-9d0a-003068a5b8db" />)* |
+| *<img width="250" alt="Screenshot_20260924_155454_TechPulse" src="https://github.com/user-attachments/assets/9e12c2c0-ddcc-4a2d-b256-4729560237fe" />* | *<img width="250" alt="7931" src="https://github.com/user-attachments/assets/2c13aa5e-c6da-4450-a9ac-4915348994df" />* | *<img width="250" alt="7935" src="https://github.com/user-attachments/assets/103ac143-b309-4586-9d0a-003068a5b8db" />* |
 
 ---
 
