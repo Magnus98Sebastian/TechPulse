@@ -11,6 +11,17 @@ import com.example.techpulse.ui.screens.RepoDetailScreen
 import kotlinx.coroutines.launch
 import kotlin.collections.emptyList
 
+/**
+ * Route-Composable für die Repository-Detailansicht.
+ *
+ * Verwaltet den Lesezeichen-Status des ausgewählten [RepositoryItem]s über das [TechPulseRepository],
+ * steuert das Umschalten von Lesezeichen in einem Coroutine-Scope und bindet die UI der [RepoDetailScreen] an.
+ *
+ * @param repo Das anzuzeigende [RepositoryItem]-Objekt mit den Detaildaten.
+ * @param repository Das Repository zur Abfrage und Verwaltung von Lesezeichen.
+ * @param onBackClick Callback für die Aktion beim Klick auf die Zurück-Schaltfläche.
+ * @param modifier Der auf das Composable anzuwendende [Modifier].
+ */
 @Composable
 fun RepoDetailRoute(
     repo: RepositoryItem,

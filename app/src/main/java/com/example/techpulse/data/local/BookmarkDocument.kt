@@ -18,6 +18,8 @@ import com.google.firebase.firestore.PropertyName
  * @property likeCount Die aktuelle Anzahl der Gefällt-mir-Angaben.
  * @property commentCount Die aktuelle Anzahl der Kommentare.
  * @property isLiked Gibt an, ob der aktuelle Benutzer diesen Beitrag mit „Gefällt mir“ markiert hat.
+ * @property type Der Typ des Lesezeichens (z. B. "POST" oder "REPOSITORY").
+ * @property language Die verwendete Hauptprogrammiersprache (falls es sich um ein Repository handelt).
  */
 data class BookmarkDocument(
     @get:PropertyName("id") @set:PropertyName("id") var id: String = "",
@@ -30,5 +32,6 @@ data class BookmarkDocument(
     @get:PropertyName("likeCount") @set:PropertyName("likeCount") var likeCount: Int = 0,
     @get:PropertyName("commentCount") @set:PropertyName("commentCount") var commentCount: Int = 0,
     @get:PropertyName("isLiked") @set:PropertyName("isLiked") var isLiked: Boolean = false,
-    @get:PropertyName("type") @set:PropertyName("type") var type: String = "POST"
+    @get:PropertyName("type") @set:PropertyName("type") var type: String = "POST",
+    @get:PropertyName("language") @set:PropertyName("language") var language: String? = null
 )

@@ -25,12 +25,13 @@ import coil.request.ImageRequest
 import com.example.techpulse.domain.Comment
 
 /**
- * Eine Jetpack Compose UI-Komponente zur Darstellung eines einzelnen Kommentars ([Comment]) in einer Card-Ansicht.
+ * Repräsentiert eine Compose-UI-Komponente zur Darstellung eines einzelnen [Comment] in einer Card-Ansicht.
  *
- * Zeigt das Profilbild (Avatar) des Benutzers mit automatischem Fallback-Bild, den Benutzernamen
- * sowie den eigentlichen Kommentartext an.
+ * Rendert das Profilbild (Avatar) des Verfassers mit automatischem Fallback-Bild, den Benutzernamen
+ * sowie den eigentlichen Fließtext des Kommentars.
  *
- * @param comment Das [Comment]-Domänenmodell, das die anzuzeigenden Daten enthält.
+ * @param comment Das [Comment]-Domain-Modell, das die darzustellenden Daten enthält.
+ * @param modifier Der optional anwendbare [Modifier] für Layout-Anpassungen von außen.
  */
 @Composable
 fun CommentItem(comment: Comment) {

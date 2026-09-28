@@ -119,6 +119,12 @@ class FeedViewModel(
         }
     }
 
+    /**
+     * Lädt die nächste Seite von Feed-Beiträgen für das unendliche Scrollen (Pagination) nach.
+     *
+     * Inkrementiert die Seitenzahl, fordert weitere Beiträge über das [repository] an
+     * und hängt diese an die bestehende Liste in [_cachedArticles] an.
+     */
     fun loadingMorePosts() {
         if(isLoadingMore || isLastPage || _uiState.value !is FeedUiState.Success) return
 

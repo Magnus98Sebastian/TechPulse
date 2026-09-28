@@ -10,10 +10,10 @@ import com.example.techpulse.ui.screens.BookmarksScreen
  *
  * Dient als Bindeglied zwischen dem [BookmarksViewModel] und der zustandslosen [BookmarksScreen]-UI.
  * Beobachtet den [BookmarksUiState] lebenszyklusbewusst mittels [collectAsStateWithLifecycle]
- * und leitet Benutzerinteraktionen (Lesezeichen umschalten, Likes vergeben, Post auswählen) an das ViewModel weiter.
+ * und leitet Benutzerinteraktionen an das ViewModel weiter.
  *
- * @param onPostClick Callback bei Ausführung eines Klicks auf einen Beitrag zur Navigation in die Detailansicht. Übergibt die [String]-ID des Beitrags.
- * @param viewModel Das injected [BookmarksViewModel] zur Verwaltung der Lesezeichendaten.
+ * @param onPostClick Callback zur Navigation in die Detailansicht mit der Post- oder Repo-ID.
+ * @param viewModel Das [BookmarksViewModel] zur Verwaltung der Lesezeichendaten.
  */
 @Composable
 fun BookmarksRoute(
@@ -24,9 +24,9 @@ fun BookmarksRoute(
 
     BookmarksScreen(
         uiState = uiState,
-        onBookmarkToggle = { bookmark -> viewModel.onBookmarkToggle(bookmark) },
-        onPostClick = { postId -> onPostClick(postId) },
+        onBookmarkToggle = viewModel::onBookmarkToggle,
+        onPostClick = onPostClick,
         onRepoClick = { repoId -> onPostClick(repoId.toString()) },
-        onLikeClick = { postId, post -> viewModel.onLikeClick(postId, post) }
+        onLikeClick = viewModel::onLikeClick
     )
 }

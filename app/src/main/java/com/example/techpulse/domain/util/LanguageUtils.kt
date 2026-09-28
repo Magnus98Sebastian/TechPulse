@@ -3,13 +3,13 @@ package com.example.techpulse.domain.util
 import androidx.compose.ui.graphics.Color
 
 /**
- * Liefert den passenden Farbwert ([Color]) für eine gegebene Programmier- oder Auszeichnungssprache.
+ * Liefert den passenden Farbwert [Color] für eine gegebene Programmier- oder Auszeichnungssprache.
  *
  * Die Zuordnung orientiert sich an den Standard-Farben gängiger Plattformen (wie GitHub).
- * Ist die Sprache nicht bekannt oder `null`, wird ein Standard-Grauton zurückgegeben.
+ * Ist [language] `null` oder unbekannt, wird ein neutraler Standard-Grauton zurückgegeben.
  *
- * @param language Der Name oder das Kürzel der Programmiersprache (Groß-/Kleinschreibung wird ignoriert).
- * @return Der entsprechende [Color]-Farbwert für UI-Elemente.
+ * @param language Der Name oder das Kürzel der Sprache (z. B. "Kotlin", "js", "c++"). Groß-/Kleinschreibung wird ignoriert.
+ * @return Die entsprechende [Color] für UI-Elemente wie Badges oder Chips.
  */
 fun getLanguageColor(language: String?): Color {
     return when (language?.lowercase()) {

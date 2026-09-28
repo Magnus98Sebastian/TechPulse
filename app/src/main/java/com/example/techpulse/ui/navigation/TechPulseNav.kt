@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,27 +18,22 @@ import com.example.techpulse.ui.presentation.bookmarks.BookmarksRoute
 import com.example.techpulse.ui.presentation.bookmarks.BookmarksViewModel
 import com.example.techpulse.ui.presentation.feed.FeedRoute
 import com.example.techpulse.ui.presentation.feed.FeedViewModel
-import com.example.techpulse.ui.presentation.repos.ReposRoute
-import com.example.techpulse.ui.presentation.repos.ReposViewModel
 import com.example.techpulse.ui.presentation.postDetail.PostDetailRoute
 import com.example.techpulse.ui.presentation.postDetail.PostDetailViewModel
 import com.example.techpulse.ui.presentation.repoDetail.RepoDetailRoute
+import com.example.techpulse.ui.presentation.repos.ReposRoute
 import com.example.techpulse.ui.presentation.repos.ReposUiState
+import com.example.techpulse.ui.presentation.repos.ReposViewModel
 import com.example.techpulse.ui.presentation.settings.SettingsRoute
-import com.example.techpulse.ui.screens.RepoDetailScreen
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 /**
- * ZentraIes Navigation-Graph-Host-Composable ([NavHost]) der TechPulse-Anwendung.
+ * Zentrales Navigation-Graph-Host-Composable ([NavHost]) der TechPulse-Anwendung.
  *
  * Verwaltet die typsichere Navigation zwischen allen Hauptscreens ([Screen.Feed], [Screen.Repos],
  * [Screen.Bookmarks], [Screen.Settings]) sowie den Detailansichten ([Screen.RepoDetailRoute],
  * [Screen.PostDetailRoute]).
- *
- * Verwaltet zudem den gemeinsamen ViewModel-Lebenszyklus über den [NavBackStackEntry], sodass
- * Detail-Screens auf Instanzen von untergeordneten ViewModels (z. B. [FeedViewModel] oder [ReposViewModel])
- * zugreifen können.
  *
  * @param navController Der [NavHostController] zur Steuerung des Navigationsflusses.
  * @param modifier Der [Modifier] zur externen Layout-Konfiguration.
@@ -74,35 +68,6 @@ fun TechPulseNav(
             )
         }
 
-        composable<Screen.RepoDetailRoute> { backStackEntry ->
-            val route: Screen.RepoDetailRoute = backStackEntry.toRoute()
-
-            val parentEntry = remember(backStackEntry) {
-                try {
-                    navController.getBackStackEntry<Screen.Repos>()
-                } catch (_: Exception) {
-                    null
-                }
-            }
-
-            val reposViewModel: ReposViewModel = if (parentEntry != null) {
-                koinViewModel(viewModelStoreOwner = parentEntry)
-            } else {
-                koinViewModel()
-            }
-
-            val repo = reposViewModel.getRepoById(route.repoId)
-
-            if (repo != null) {
-                RepoDetailScreen(
-                    repo = repo,
-                    isBookmarked = repo.isBookmarked,
-                    onBookmarkClick = { reposViewModel.toggleBookmark(repo) },
-                    onBackClick = { navController.popBackStack() }
-                )
-            }
-        }
-
         composable<Screen.Bookmarks> {
             val bookmarksViewModel: BookmarksViewModel = koinViewModel()
             BookmarksRoute(
@@ -121,8 +86,47 @@ fun TechPulseNav(
         composable<Screen.Settings> {
             SettingsRoute(
                 viewModel = koinViewModel(),
-                onBackClick = { navController.run { popBackStack() } }
+                onBackClick = { navController.popBackStack() }
             )
+        }
+
+        composable<Screen.RepoDetailRoute> { backStackEntry ->
+            val route: Screen.RepoDetailRoute = backStackEntry.toRoute()
+
+            val parentEntry = remember(backStackEntry) {
+                try {
+                    navController.getBackStackEntry<Screen.Repos>()
+                } catch (_: Exception) {
+                    null
+                }
+            }
+
+            val reposViewModel: ReposViewModel = if (parentEntry != null) {
+                koinViewModel(viewModelStoreOwner = parentEntry)
+            } else {
+                koinViewModel()
+            }
+
+            val repository: TechPulseRepository = koinInject()
+            val reposUiState by reposViewModel.uiState.collectAsState()
+
+            val repo = (reposUiState as? ReposUiState.Success)?.repos?.find { it.id == route.repoId }
+                ?: reposViewModel.getRepoById(route.repoId)
+
+            if (repo != null) {
+                RepoDetailRoute(
+                    repo = repo,
+                    repository = repository,
+                    onBackClick = { navController.popBackStack() }
+                )
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
         }
 
         composable<Screen.PostDetailRoute> { backStackEntry ->
@@ -143,7 +147,6 @@ fun TechPulseNav(
             }
 
             val postDetailViewModel: PostDetailViewModel = koinViewModel()
-
             val post = feedViewModel.getPostById(route.postId)
 
             if (post != null) {
@@ -154,33 +157,6 @@ fun TechPulseNav(
                     navController = navController,
                     viewModel = postDetailViewModel
                 )
-            }
-        }
-
-        composable<Screen.RepoDetailRoute> { backStackEntry: NavBackStackEntry ->
-
-            val route: Screen.RepoDetailRoute = backStackEntry.toRoute()
-
-            val reposViewModel: ReposViewModel = koinViewModel()
-            val repository: TechPulseRepository = koinInject()
-
-            val reposUiState by reposViewModel.uiState.collectAsState()
-
-            val repo = (reposUiState as? ReposUiState.Success)?.repos?.find { it.id == route.repoId }
-
-            if (repo != null) {
-                RepoDetailRoute(
-                    repo = repo,
-                    repository = repository,
-                    onBackClick = { navController.popBackStack() }
-                )
-            } else {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
             }
         }
     }

@@ -33,6 +33,18 @@ import com.example.techpulse.ui.components.PostCard
 import com.example.techpulse.ui.components.RepoItemCard
 import com.example.techpulse.ui.presentation.bookmarks.BookmarksUiState
 
+/**
+ * Screen zur Anzeige der gespeicherten Lesezeichen (Bookmarks).
+ *
+ * Bietet eine tabellarische Aufteilung (Tabs) zur gefilterten Darstellung von gespeicherten
+ * Beiträgen (Posts) und GitHub-Repositories. Unterstützt Lade-, Fehler- und Erfolgszustände.
+ *
+ * @param uiState Der aktuelle UI-Zustand des Screens ([BookmarksUiState]).
+ * @param onBookmarkToggle Callback zum Hinzufügen oder Entfernen eines Lesezeichens.
+ * @param onPostClick Callback beim Klick auf einen Beitrag oder dessen Kommentare, übergibt die Post-ID.
+ * @param onRepoClick Callback beim Klick auf ein Repository, übergibt die Repository-ID.
+ * @param onLikeClick Callback beim Klick auf den Like-Button eines Beitrags, übergibt die Post-ID und den [Post].
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookmarksScreen(
@@ -125,7 +137,7 @@ fun BookmarksScreen(
                                     PostCard(
                                         post = post,
                                         onLikeClick = { onLikeClick(post.id, post) },
-                                        onCommentCLick = { onPostClick(post.id) },
+                                        onCommentClick = { onPostClick(post.id) },
                                         onBookmarkClick = { onBookmarkToggle(bookmark) },
                                         onPostClick = { onPostClick(post.id) },
                                         isExpandableText = false,
@@ -144,7 +156,7 @@ fun BookmarksScreen(
                                             ownerName = bookmark.sourceName,
                                             ownerAvatarUrl = bookmark.imageUrl.ifEmpty { bookmark.userAvatarUrl },
                                             description = bookmark.description,
-                                            language = null,
+                                            language = bookmark.language,
                                             starsCount = bookmark.likeCount,
                                             forksCount = 0,
                                             openIssuesCount = 0,

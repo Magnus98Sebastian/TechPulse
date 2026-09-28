@@ -1,6 +1,5 @@
 package com.example.techpulse.ui.navigation
 
-import com.example.techpulse.domain.RepositoryItem
 import kotlinx.serialization.Serializable
 
 /**

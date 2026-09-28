@@ -33,15 +33,15 @@ import com.example.techpulse.domain.util.toKFormattedString
 import com.example.techpulse.domain.util.getLanguageColor
 
 /**
- * Eine Jetpack Compose UI-Komponente zur Darstellung eines GitHub-Repositories ([RepositoryItem]) in einer Card-Ansicht.
+ * Repräsentiert eine Compose-UI-Komponente zur Darstellung eines GitHub-Repositories ([RepositoryItem]) in einer Card-Ansicht.
  *
  * Zeigt den Eigentümer ([RepositoryItem.ownerName]), den Repository-Namen ([RepositoryItem.name]),
  * die formatierte Anzahl der Stars mit einem Badge, eine optionale Beschreibung sowie die primäre
  * Programmiersprache mit zugehörigem Farbindikator an.
  *
  * @param repo Das [RepositoryItem]-Domänenmodell mit den Daten des Repositories.
- * @param modifier Der [Modifier] zur externen Layout-Konfiguration.
- * @param onRepoClick Callback, der beim Klick auf die Card aufgerufen wird und das ausgewählte [RepositoryItem] übergibt.
+ * @param onRepoClick Lambda-Callback, der beim Klick auf die Card aufgerufen wird und das ausgewählte [RepositoryItem] übergibt.
+ * @param modifier Der optional anwendbare [Modifier] für Layout-Anpassungen von außen.
  */
 @Composable
 fun RepoItemCard(

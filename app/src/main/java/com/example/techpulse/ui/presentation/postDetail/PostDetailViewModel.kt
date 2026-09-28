@@ -178,6 +178,11 @@ class PostDetailViewModel(
         }
     }
 
+    /**
+     * Beobachtet den Like-Zustand sowie die Live-Like-Anzahl des Beitrags aus Firestore und synchronisiert sie mit dem UI-State.
+     *
+     * @param postId Die ID des zu beobachtenden Beitrags.
+     */
     private fun observeLikeState(postId: String) {
         viewModelScope.launch {
             repository.isLiked(postId).collect { isLiked ->
@@ -208,6 +213,12 @@ class PostDetailViewModel(
         }
     }
 
+    /**
+     * Schaltet den Like-Status des angegebenen Beitrags um und synchronisiert ihn mit dem Backend.
+     *
+     * @param postId Die ID des Beitrags, für den das Like umgeschaltet werden soll.
+     * @param post Das [Post]-Objekt zur Referenzierung des initialen Like-Zählers.
+     */
     fun toggleLike(postId: String, post: Post) {
         viewModelScope.launch {
             try {

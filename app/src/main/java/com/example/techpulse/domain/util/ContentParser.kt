@@ -4,7 +4,7 @@ package com.example.techpulse.domain.util
  * Repräsentiert das Ergebnis des geparsten Beitragsinhalts.
  *
  * @property title Der extrahierte Titel aus dem Front-Matter (falls vorhanden), sonst ein leerer String.
- * @property cleanBody Der Bereinigte Haupttext des Beitrags ohne das Front-Matter-Metadaten-Block.
+ * @property cleanBody Der bereinigte Haupttext des Beitrags ohne den Front-Matter-Metadaten-Block.
  */
 data class ParsedPostContent(
     val title: String,
@@ -16,11 +16,14 @@ data class ParsedPostContent(
  */
 object ContentParser {
 
+    // Regex zur exakten Trennung von Front-Matter und Body am Anfang der Datei
+    private val frontMatterRegex = Regex("""^---\r?\n([\s\S]*?)\r?\n---\r?\n?""")
+
+    // Regex zur Extraktion des Titels innerhalb des Front-Matter-Blocks
+    private val titleRegex = Regex("""(?m)^title:\s*["']?([^"'\n\r]+)["']?""")
+
     /**
-     * Parsed den rohen Text eines Beitrags und trennt YAML-Front-Matter-Metadaten vom eigentlichen Inhalt.
-     *
-     * Falls der Text mit Front-Matter (`---`) beginnt, wird der Titel über eine Reguläre Expression
-     * extrahiert und der Metadaten-Block aus dem Rumpftext entfernt.
+     * Parst den rohen Text eines Beitrags und trennt YAML-Front-Matter-Metadaten vom eigentlichen Inhalt.
      *
      * @param rawText Der unbearbeitete Gesamttext des Beitrags.
      * @return Ein [ParsedPostContent]-Objekt mit extrahiertem Titel und bereinigtem Haupttext.
@@ -30,11 +33,15 @@ object ContentParser {
             return ParsedPostContent(title = "", cleanBody = rawText)
         }
 
-        val titleRegex = Regex("""title:\s*["']?([^"\n\r]+)["']?""")
-        val titleMatch = titleRegex.find(rawText)
-        val extractedTitle = titleMatch?.groupValues?.get(1)?.trim() ?: ""
+        val frontMatterMatch = frontMatterRegex.find(rawText)
+            ?: return ParsedPostContent(title = "", cleanBody = rawText)
 
-        val cleanedText = rawText.replace(Regex("""^---[\s\S]*?---\s*"""), "").trim()
+        // Nur im isolierten Front-Matter-Header nach dem Titel suchen
+        val headerContent = frontMatterMatch.groupValues[1]
+        val extractedTitle = titleRegex.find(headerContent)?.groupValues?.get(1)?.trim().orEmpty()
+
+        // Nur den vorderen Header entfernen
+        val cleanedText = rawText.substring(frontMatterMatch.range.last + 1).trim()
 
         return ParsedPostContent(
             title = extractedTitle,

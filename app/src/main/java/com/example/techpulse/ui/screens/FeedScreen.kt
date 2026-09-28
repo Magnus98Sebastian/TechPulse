@@ -32,18 +32,18 @@ import com.example.techpulse.ui.components.PostCard
 import com.example.techpulse.ui.presentation.feed.FeedUiState
 
 /**
- * Screen-Composable zur Anzeige des Haupt-Feeds mit Beiträgen.
+ * Haupt-Screen zur Anzeige des Beitrags-Feeds ([FeedUiState]).
  *
- * Verwaltet die Zustände [FeedUiState.Loading], [FeedUiState.Error] und [FeedUiState.Success].
- * Stellt im Erfolgsfall eine scrollbare Liste von Beiträgen ([PostCard]) bereit oder zeigt
- * entsprechende Meldungen bei leeren Beiträgen bzw. Fehlern an.
+ * Stellt Beitragslisten dar, unterstützt automatisches Nachladen von weiteren Inhalten (Pagination/Infinite Scrolling)
+ * beim Erreichen des Listenendes sowie Lade-, Fehler- und Leerzustände.
  *
- * @param uiState Der aktuelle UI-Zustand des Haupt-Feeds ([FeedUiState]).
- * @param onPostClick Callback zur Navigation zur Detailansicht eines Beitrags mittels dessen ID.
- * @param onBookmarkClick Callback zum Umschalten des Lesezeichen-Status für einen Beitrag ([Post]).
- * @param onLikeClick Callback zum Auslösen einer Like-Aktion unter Angabe von Beitrags-ID und [Post]-Objekt.
- * @param onRefresh Callback zum erneuten Laden der Daten im Fehlerfall.
- * @param modifier Der [Modifier] zur Anpassung des Screen-Layouts.
+ * @param uiState Der aktuelle UI-Zustand des Feeds ([FeedUiState]).
+ * @param onLoadMore Callback zum Anfordern weiterer Beiträge beim Erreichen des Scroll-Endes.
+ * @param onPostClick Callback beim Klick auf einen Beitrag oder den Kommentar-Button, übergibt die Post-ID.
+ * @param onBookmarkClick Callback zum Speichern oder Entfernen eines Beitrags aus den Lesezeichen.
+ * @param onLikeClick Callback beim Klick auf den Like-Button eines Beitrags, übergibt die Post-ID und den [Post].
+ * @param onRefresh Callback zum erneuten Laden des Feeds im Fehlerfall.
+ * @param modifier Der [Modifier] zur Anpassung des Layouts dieser Composable.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -119,7 +119,7 @@ fun FeedScreen(
                                 PostCard(
                                     post = post,
                                     onLikeClick = { onLikeClick(post.id, post) },
-                                    onCommentCLick = { onPostClick(post.id) },
+                                    onCommentClick = { onPostClick(post.id) },
                                     onBookmarkClick = { onBookmarkClick(post) },
                                     onPostClick = { onPostClick(post.id) },
                                     modifier = Modifier.fillMaxWidth(),

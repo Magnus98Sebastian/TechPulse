@@ -19,15 +19,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 /**
- * Eine Jetpack Compose UI-Komponente zur Darstellung von langem Text, der bei Bedarf
- * ein- und ausgeklappt werden kann.
+ * Repräsentiert eine Compose-UI-Komponente zur Darstellung von langem Fließtext,
+ * der bei Bedarf ein- und ausgeklappt werden kann.
  *
- * Wenn der Text die maximale Zeilenanzahl im eingeklappten Zustand ([collapsedMaxLines]) überschreitet,
- * wird automatisch ein klickbarer Button ("Mehr anzeigen..." / "Weniger anzeigen") eingeblendet.
- * Der Übergang zwischen den Zuständen ist mittels [animateContentSize] sanft animiert.
+ * Überschreitet [text] die im eingeklappten Zustand erlaubte Zeilenanzahl [collapsedMaxLines],
+ * wird automatisch eine klickbare Schaltfläche ("Mehr anzeigen..." / "Weniger anzeigen") eingeblendet.
+ * Die Höhenänderung beim Umschalten wird mittels [animateContentSize] sanft animiert.
  *
  * @param text Der anzuzeigende Volltext.
- * @param modifier Der [Modifier] zur externen Layout-Konfiguration.
+ * @param modifier Der optional anwendbare [Modifier] für Layout-Anpassungen von außen.
  * @param collapsedMaxLines Die maximale Anzahl an Zeilen im eingeklappten Zustand (Standard: 4).
  */
 @Composable

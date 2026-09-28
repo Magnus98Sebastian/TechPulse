@@ -48,22 +48,19 @@ import com.example.techpulse.ui.theme.TechPulseGradient
 /**
  * Eine Jetpack Compose UI-Komponente zur Darstellung eines einzelnen Beitrags ([Post]) in einer Card-Ansicht.
  *
- * Stellt den Beitragsersteller (Avatar, Name, Zeitstempel), geparsten Titel- und Body-Text, ein optionales
- * Beitragsbild sowie Interaktions-Buttons (Gefällt mir, Kommentare, Lesezeichen) bereit.
- *
  * @param post Das [Post]-Domänenmodell mit allen Daten des Beitrags.
  * @param onLikeClick Callback beim Klick auf den Like-Button.
- * @param onCommentCLick Callback beim Klick auf den Kommentar-Button.
+ * @param onCommentClick Callback beim Klick auf den Kommentar-Button.
  * @param onBookmarkClick Callback beim Klick auf den Lesezeichen-Button.
  * @param onPostClick Callback beim Klick auf die gesamte Card oder das Menü-Icon.
  * @param modifier Der [Modifier] zur externen Layout-Konfiguration.
- * @param isExpandableText Bestimmt, ob der Fließtext mit der [ExpandableText]-Komponente ein-/ausklappbar dargestellt werden soll.
+ * @param isExpandableText Bestimmt, ob der Fließtext ein-/ausklappbar dargestellt werden soll.
  */
 @Composable
 fun PostCard(
     post: Post,
     onLikeClick: () -> Unit,
-    onCommentCLick: () -> Unit,
+    onCommentClick: () -> Unit,
     onBookmarkClick: () -> Unit,
     onPostClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -76,7 +73,7 @@ fun PostCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onPostClick() },
+            .clickable(onClick = onPostClick),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
@@ -87,16 +84,17 @@ fun PostCard(
                 .fillMaxWidth()
                 .padding(12.dp)
         ) {
+            // Header: User Info & Menü
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(post.userAvatarUrl.takeIf { !it.isNullOrBlank() } ?: "https://dev.to/assets/sparkle-heart-5f9bee37d7a37719658692e19277d1209b02b5e634b3011340a5015b3e648873.png")
+                        .data(post.userAvatarUrl)
                         .crossfade(true)
                         .build(),
-                    contentDescription = null,
+                    contentDescription = "Profilbild von ${post.username}",
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
@@ -121,21 +119,27 @@ fun PostCard(
                     )
                 }
                 IconButton(onClick = onPostClick) {
-                    Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = "Weitere Optionen"
+                    )
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            // Titel
             if (parsedContent.title.isNotBlank()) {
                 Text(
                     text = parsedContent.title,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Normal
+                    fontWeight = FontWeight.SemiBold
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(6.dp))
             }
+
+            // Fließtext
             if (parsedContent.cleanBody.isNotEmpty()) {
                 if (isExpandableText) {
                     ExpandableText(
@@ -152,13 +156,14 @@ fun PostCard(
                 Spacer(modifier = Modifier.height(10.dp))
             }
 
+            // Beitragsbild
             if (!post.imageUrl.isNullOrBlank()) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(post.imageUrl)
                         .crossfade(true)
                         .build(),
-                    contentDescription = null,
+                    contentDescription = "Beitragsbild",
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
@@ -168,6 +173,7 @@ fun PostCard(
                 Spacer(modifier = Modifier.height(10.dp))
             }
 
+            // Aktionsleiste (Like, Comment, Bookmark)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -181,7 +187,7 @@ fun PostCard(
                     IconButton(onClick = onLikeClick) {
                         Icon(
                             imageVector = if (post.isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                            contentDescription = "Like",
+                            contentDescription = if (post.isLiked) "Gefällt mir nicht mehr" else "Gefällt mir",
                             tint = heartColor
                         )
                     }
@@ -190,10 +196,10 @@ fun PostCard(
                         style = MaterialTheme.typography.labelLarge
                     )
                     Spacer(modifier = Modifier.width(16.dp))
-                    IconButton(onClick = onCommentCLick) {
+                    IconButton(onClick = onCommentClick) {
                         Icon(
                             imageVector = Icons.Outlined.ModeComment,
-                            contentDescription = "Comment",
+                            contentDescription = "Kommentare anzeigen",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -204,17 +210,9 @@ fun PostCard(
                 }
                 IconButton(onClick = onBookmarkClick) {
                     Icon(
-                        imageVector = if (post.isBookmarked) {
-                            Icons.Filled.Bookmark
-                        } else {
-                            Icons.Outlined.BookmarkBorder
-                        },
-                        contentDescription = "Bookmark",
-                        tint = if (post.isBookmarked) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        }
+                        imageVector = if (post.isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                        contentDescription = if (post.isBookmarked) "Lesezeichen entfernen" else "Lesezeichen hinzufügen",
+                        tint = if (post.isBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

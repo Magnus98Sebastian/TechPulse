@@ -7,9 +7,11 @@ import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.example.techpulse.data.local.BookmarkDocument
 import com.example.techpulse.data.mapper.toDomainModel
+import com.example.techpulse.data.mapper.toPost
 import com.example.techpulse.data.remote.TechPulseApi
 import com.example.techpulse.domain.Article
 import com.example.techpulse.domain.Comment
+import com.example.techpulse.domain.Post
 import com.example.techpulse.domain.RepositoryItem
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -22,8 +24,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 import kotlin.coroutines.resume
-import com.example.techpulse.data.mapper.toPost
-import com.example.techpulse.domain.Post
 
 /**
  * Zentrales Repository zur Verwaltung aller Datenströme und Datenoperationen der Anwendung.
@@ -56,7 +56,7 @@ class TechPulseRepository(
      * Stellt sicher, dass eine gültige Benutzer-ID vorhanden ist.
      * Meldet den Benutzer anonym an, falls bisher keine Sitzung existiert.
      *
-     * @return Die Firebase-UID des bestehenden oder neu erstelleten anonymen Benutzers.
+     * @return Die Firebase-UID des bestehenden oder neu erstellten anonymen Benutzers.
      * @throws IllegalStateException Wenn der anonyme Anmeldevorgang fehlschlägt.
      */
     suspend fun ensureAnonymousUser(): String {
@@ -128,18 +128,20 @@ class TechPulseRepository(
         return try {
             val response = api.searchRepositories(query = query, page = page)
             val domainList = response.items.map { it.toDomainModel() }
-            Log.d("TechPulseAPI", "Repositories geladen (Seite $page): ${domainList.size} Einträge")
+            Log.d("TechPulseAPI", "Repositories geladen (Seite $page):${domainList.size} Einträge")
             Result.success(domainList)
         } catch (e: Exception) {
-            Log.e("TechPulseAPI", "Fehler bei searchRepositories für Query: '$query', Seite $page", e)
+            Log.e("TechPulseAPI", "Fehler bei searchRepositories für Query: '$query', Seite$page", e)
             Result.failure(e)
         }
     }
 
     /**
-     * Lädt die neuesten Artikel von Dev.to für den Haupt-Feed.
+     * Lädt die neuesten Artikel von Dev.to für den Haupt-Feed und konvertiert sie in Posts.
      *
-     * @return Ein [Result] mit einer Liste von [Article]-Domänenobjekten.
+     * @param page Die abzurufende Seitennummer für Paginierung (Standard: `1`).
+     * @param perPage Die Anzahl der Artikel pro Seite (Standard: `20`).
+     * @return Ein [Result] mit einer Liste von [Post]-Domänenobjekten.
      */
     suspend fun getFeedArticles(page: Int = 1, perPage: Int = 20): Result<List<Post>> = runCatching {
         return try {
@@ -228,7 +230,7 @@ class TechPulseRepository(
      *
      * @param repo Das betreffende GitHub-Repository.
      */
-    suspend fun  toggleRepoBookmark(repo: RepositoryItem) {
+    suspend fun toggleRepoBookmark(repo: RepositoryItem) {
         val bookmark = BookmarkDocument(
             id = repo.id.toString(),
             title = repo.name,
@@ -237,7 +239,11 @@ class TechPulseRepository(
             userAvatarUrl = repo.ownerAvatarUrl,
             sourceName = repo.ownerName,
             createdAt = System.currentTimeMillis(),
-            type = "REPOSITORY"
+            likeCount = repo.starsCount,
+            commentCount = 0,
+            isLiked = false,
+            type = "REPOSITORY",
+            language = repo.language ?: "Unbekannt"
         )
         toggleBookmark(bookmark)
     }
@@ -606,8 +612,8 @@ class TechPulseRepository(
                     }
 
                     override fun onError(requestId: String, error: ErrorInfo) {
-                        Log.e("CloudinaryError", "Code: ${error.code}, Msg: ${error.description}")
-                        continuation.resume(Result.failure(Exception("Cloudinary [${error.code}]: ${error.description}")))
+                        Log.e("CloudinaryError", "Code: ${error.code}, Msg:${error.description}")
+                        continuation.resume(Result.failure(Exception("Cloudinary [${error.code}]:${error.description}")))
                     }
 
                     override fun onReschedule(requestId: String, error: ErrorInfo) {

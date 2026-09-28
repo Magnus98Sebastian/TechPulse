@@ -11,7 +11,7 @@ import com.example.techpulse.domain.RepositoryItem
 sealed interface ReposUiState {
 
     /** Initialer Zustand vor Ausführung einer ersten Suchanfrage. */
-    data object  Idle : ReposUiState
+    data object Idle : ReposUiState
 
     /** Signalisiert, dass Repository-Daten über das Netzwerk geladen oder gefiltert werden. */
     data object Loading : ReposUiState

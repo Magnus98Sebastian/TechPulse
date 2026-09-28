@@ -1,14 +1,14 @@
 package com.example.techpulse.ui.main
 
 /**
- * Repräsentiert den UI-Zustand (UI State) für die [MainViewModel]- und Hauptnavigations-Ansicht.
+ * Repräsentiert den UI-Zustand ([MainUiState]) der Hauptnavigations-Ansicht.
  *
- * Kapselt Informationen über Ladezustände, die Sichtbarkeit von Dialogen
+ * Kapselt Informationen über Ladezustände, die Dialog-Steuerung
  * sowie etwaige Fehlermeldungen bei der Benutzerinitialisierung.
  *
  * @property isLoading Gibt an, ob initiale Daten oder Benutzerinformationen geladen werden.
  * @property showNameDialog Steuert die Sichtbarkeit des Dialogs zur Benutzernamenseingabe.
- * @property errorMessage Enthält eine optionale Fehlermeldung (z. B. bei Validierungsfehlern). `null`, wenn kein Fehler vorliegt.
+ * @property errorMessage Enthält eine optionale Fehlermeldung (z. B. bei Validierungsfehlern), sonst `null`.
  * @property isUsernameSaving Gibt an, ob das Speichern des Benutzernamens aktuell verarbeitet wird.
  */
 data class MainUiState(

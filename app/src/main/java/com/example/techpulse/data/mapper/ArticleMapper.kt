@@ -41,6 +41,15 @@ fun DevToArticleDto.toDomainModel(): Article {
     )
 }
 
+/**
+ * Konvertiert ein [Article]-Domänenmodell in ein [Post]-Objekt für die Feed-Darstellung.
+ *
+ * Fügt Titel und Beschreibung zu einem zusammenhängenden Inhaltstext zusammen und setzt
+ * Standardwerte für UI-Zustände wie Likes und Lesezeichen.
+ *
+ * @receiver [Article] Das Quell-Artikelobjekt aus der Domänenschicht.
+ * @return Ein instanziiertes [Post]-Objekt zur Anzeige in der Feeds-Übersicht.
+ */
 fun Article.toPost(): Post {
     return Post(
         id = this.id.toString(),

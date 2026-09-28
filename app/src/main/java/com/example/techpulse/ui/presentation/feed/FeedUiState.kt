@@ -16,6 +16,7 @@ sealed interface FeedUiState {
      * Signalisiert das erfolgreiche Laden der Feed-Beiträge.
      *
      * @property posts Die Liste der geladenen [Post]-Beiträge.
+     * @property isLoadingMore Gibt an, ob gerade weitere Beiträge am Ende der Liste nachgeladen werden (Paging).
      */
     data class Success(
         val posts: List<Post> = emptyList(),

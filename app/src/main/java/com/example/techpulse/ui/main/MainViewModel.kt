@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel für die Hauptansicht und globale Initialisierung der TechPulse-Anwendung.
+ * Repräsentiert das ViewModel für die Hauptansicht und die globale Initialisierung der Anwendung.
  *
  * Verwaltet den Anwendungszustand ([MainUiState]) beim App-Start, stellt die anonyme
  * Firebase-Authentifizierung sicher, prüft den Onboarding-Status des Benutzers und
@@ -20,7 +20,8 @@ import kotlinx.coroutines.launch
  */
 class MainViewModel(
     private val repository: TechPulseRepository
-): ViewModel() {
+) : ViewModel() {
+
     private val _uiState = MutableStateFlow(MainUiState())
 
     /** Der beobachtbare [StateFlow] des aktuellen UI-Zustands. */
@@ -86,7 +87,10 @@ class MainViewModel(
                     }
                     return@launch
                 }
+            } else {
+                _uiState.update { it.copy(isUsernameSaving = true, errorMessage = null) }
             }
+
             try {
                 repository.saveUsername(trimmedName)
                 _uiState.update {

@@ -15,15 +15,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 
 /**
- * Ein Material Design 3 Dialog ([AlertDialog]) zur Eingabe eines Benutzernamens.
+ * Repräsentiert einen Material Design 3 Dialog ([AlertDialog]) zur Eingabe eines Benutzernamens.
  *
  * Bietet dem Benutzer ein Eingabefeld ([OutlinedTextField]) sowie Validierungsunterstützung
- * über [errorMessage]. Falls das Feld leer bleibt, bietet der Bestätigungs-Button dynamisch
- * die Option, einen zufälligen Namen zu generieren/nutzen.
+ * über [errorMessage]. Bleibt das Feld leer, schlägt die Bestätigungsschaltfläche
+ * dynamisch die Verwendung eines zufälligen Namens vor.
  *
- * @param errorMessage Optionale Fehlermeldung zur Validierung (z. B. bei unzulässigen Zeichen oder bereits vergebenem Namen). `null`, wenn kein Fehler vorliegt.
- * @param onDismiss Callback, der aufgerufen wird, wenn der Dialog abgebrochen oder außerhalb geklickt wird.
- * @param onConfirm Callback, der beim Bestätigen aufgerufen wird. Übergibt den aktuell eingegebenen Text (kann leer sein).
+ * @param errorMessage Optionale Fehlermeldung zur Validierung (z. B. bei unzulässigen Zeichen oder bereits vergebenem Namen), sonst `null`.
+ * @param onDismiss Lambda-Callback, der beim Abbrechen oder Schließen des Dialogs aufgerufen wird.
+ * @param onConfirm Lambda-Callback, der beim Bestätigen aufgerufen wird und den eingegebenen Text übergibt (kann leer sein).
+ * @param modifier Der optional anwendbare [Modifier] für Layout-Anpassungen von außen.
  */
 @Composable
 fun NameInputDialog(

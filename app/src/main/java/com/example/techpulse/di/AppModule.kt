@@ -98,8 +98,10 @@ val appModule = module {
     viewModelOf(::BookmarksViewModel)
 
     /** ViewModel für die Hauptnavigation und den Anwendungs-State. */
-    viewModel { MainViewModel(repository = get()) }
+//    viewModel { MainViewModel(repository = get()) }
+    viewModelOf(::MainViewModel)
 
     /** ViewModel für die Einstellungen-Ansicht. */
-    viewModel { SettingsViewModel(repository = get()) }
+//    viewModel { SettingsViewModel(repository = get()) }
+    viewModelOf(::SettingsViewModel)
 }

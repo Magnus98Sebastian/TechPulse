@@ -19,15 +19,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 /**
- * Eine Wiederverwendbare Jetpack Compose UI-Komponente zur kompakten Darstellung einzelner Statistiken.
+ * Repräsentiert eine Compose-UI-Komponente zur kompakten Darstellung einzelner Statistiken.
  *
- * Rendert eine Material 3 [Card] mit zentriertem [Icon], einem hervorgehobenen Zahlen- oder Textwert
+ * Rendert eine Material Design 3 [Card] mit zentriertem [icon], einem hervorgehobenen Zahlen- oder Textwert
  * ([value]) und einer beschreibenden Beschriftung ([label]).
  *
  * @param icon Das anzuzeigende [ImageVector]-Icon oben in der Karte.
  * @param value Der darzustellende Stat-Wert (z. B. "1.2k" oder "42").
  * @param label Die kurze Beschriftung unter dem Wert (z. B. "Forks" oder "Issues").
- * @param modifier Der [Modifier] zur externen Layout- und Größen-Konfiguration.
+ * @param modifier Der optional anwendbare [Modifier] für Layout-Anpassungen von außen.
  */
 @Composable
 fun StatCard(

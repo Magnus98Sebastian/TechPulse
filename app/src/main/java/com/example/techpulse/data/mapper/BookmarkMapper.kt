@@ -7,17 +7,17 @@ import java.util.Date
 import java.util.Locale
 
 /**
-* Konvertiert ein [BookmarkDocument] aus der lokalen Firestore-Datenbank
-* in ein [Post]-Domänenmodell für die Benutzeroberfläche.
-*
-* Konvertierungslogik:
-* - Wandelt den Unix-Timestamp [BookmarkDocument.createdAt] in ein lesbares Datumsformat (`dd.MM.yyyy`) um.
-* - Fügt Titel und Beschreibung zusammen, falls eine Beschreibung vorhanden und ungleich dem Titel ist.
-* - Setzt [Post.isBookmarked] fest auf `true`.
-*
-* @receiver Das zu konvertierende [BookmarkDocument]-Objekt.
-* @return Das aufbereitete [Post]-Domänenmodell.
-*/
+ * Konvertiert ein [BookmarkDocument] aus der lokalen Firestore-Datenbank
+ * in ein [Post]-Domänenmodell für die Benutzeroberfläche.
+ *
+ * Konvertierungslogik:
+ * - Wandelt den Unix-Timestamp [BookmarkDocument.createdAt] in ein lesbares Datumsformat (`dd.MM.yyyy`) um.
+ * - Fügt Titel und Beschreibung zusammen, falls eine Beschreibung vorhanden und ungleich dem Titel ist.
+ * - Setzt [Post.isBookmarked] fest auf `true`.
+ *
+ * @receiver Das zu konvertierende [BookmarkDocument]-Objekt.
+ * @return Das aufbereitete [Post]-Domänenmodell.
+ */
 fun BookmarkDocument.toPost(): Post {
     val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     val formattedDate = formatter.format(Date(this.createdAt))
@@ -48,6 +48,7 @@ fun BookmarkDocument.toPost(): Post {
  * Konvertierungslogik:
  * - Übernimmt den Beitragstext als Titel des Dokuments.
  * - Setzt den Erstellungszeitpunkt ([BookmarkDocument.createdAt]) auf den aktuellen Systemzeitstempel.
+ * - Kennzeichnet das Dokument über den Typ [BookmarkDocument.type] explizit als `"POST"`.
  *
  * @receiver Das zu konvertierende [Post]-Objekt.
  * @return Das für die Firestore-Datenbank vorbereitete [BookmarkDocument].

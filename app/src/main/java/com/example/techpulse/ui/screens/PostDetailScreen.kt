@@ -134,7 +134,7 @@ fun PostDetailScreen(
                 PostCard(
                     post = currentPost,
                     onLikeClick = onLikeClick,
-                    onCommentCLick = { },
+                    onCommentClick = { },
                     onBookmarkClick = onBookmarkClick,
                     onPostClick = { },
                     isExpandableText = true

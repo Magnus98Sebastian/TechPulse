@@ -1,22 +1,22 @@
 package com.example.techpulse.domain
 
 /**
-* Domain-Modell für einen News-Artikel oder Blog-Beitrag in der TechPulse-App.
-*
-* @property id Eindeutige Kennung des Artikels.
-* @property title Der Haupttitel des Artikels.
-* @property description Kurze Zusammenfassung oder Vorschautext des Artikels (optional).
-* @property bodyText Der vollständige Fließtext oder Inhalt des Beitrags.
-* @property sourceName Name der Quelle oder der Plattform (z. B. "DEV Community").
-* @property publishedAt Formatiertes Datum oder Zeitstempel der Veröffentlichung.
-* @property imageUrl URL des Beitrags- oder Bannerbildes (optional).
-* @property userAvatarUrl URL des Profilbildes des Autors (optional).
-* @property isLiked Gibt an, ob der aktuelle Benutzer den Artikel gelikt hat.
-* @property likeCount Gesamtzahl der Vergaben von Likes/Herzen.
-* @property publicReactionsCount Gesamtzahl aller öffentlichen Reaktionen.
-* @property commentCount Anzahl der Kommentare unter dem Artikel.
-* @property isBookmarked Gibt an, ob der Artikel lokal als Lesezeichen gespeichert ist.
-*/
+ * Repräsentiert das zentrale Domain-Modell für einen News-Artikel oder Blog-Beitrag.
+ *
+ * @property id Eindeutige Kennung des Artikels.
+ * @property title Der Haupttitel des Artikels.
+ * @property description Kurze Zusammenfassung oder Vorschautext des Artikels (optional, sonst `null`).
+ * @property bodyText Der vollständige Fließtext oder Hauptinhalt des Beitrags.
+ * @property sourceName Name der Quellplattform (z. B. "DEV Community").
+ * @property publishedAt Formatiertes Veröffentlichungsdatum oder Zeitstempel (z. B. ISO-8601 oder "2 hours ago").
+ * @property imageUrl Web-URL des Beitrags- oder Headerbildes (optional).
+ * @property userAvatarUrl Web-URL des Autoren-Profilbildes (optional).
+ * @property isLiked Gibt an, ob der aktuelle Benutzer den Artikel gelikt hat.
+ * @property likeCount Gesamtzahl der vergebenen Likes oder Herzen.
+ * @property publicReactionsCount Gesamtzahl aller öffentlichen Reaktionen.
+ * @property commentCount Anzahl der Kommentare unter dem Artikel.
+ * @property isBookmarked Gibt an, ob der Artikel lokal als Lesezeichen gespeichert ist.
+ */
 data class Article(
     val id: String,
     val title: String,
