@@ -73,9 +73,11 @@ Die App folgt den Prinzipien der Clean Architecture mit einer klaren Schichtentr
 
 - [x] Endless Scrolling für Dev.to Artikel
 - [x] Lesezeichen-Synchronisierung mit Firebase Firestore
-- [ ] Push-Benachrichtigungen bei neuen Top-Artikeln
+- [ ] Push-Benachrichtigungen
 - [ ] Offline-First Unterstützung mit Room-Caching für den Feed
 - [ ] Dark / Light Theme Toggle
+- [ ] Funktion um Posts selber zu erstellen
+- [ ] Personalisierte Filter & Topics
 
 ---
 
