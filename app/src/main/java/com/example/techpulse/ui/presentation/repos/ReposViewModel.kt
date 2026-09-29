@@ -85,7 +85,7 @@ class ReposViewModel(
     /**
      * Lädt die initiale Liste populärer GitHub-Repositories über das [repository].
      */
-    private fun loadRepositories() {
+    fun loadRepositories() {
         viewModelScope.launch {
             _isLoading.value = true
             _errorMessage.value = null

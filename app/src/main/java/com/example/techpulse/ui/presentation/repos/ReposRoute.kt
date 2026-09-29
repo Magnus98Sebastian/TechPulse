@@ -33,6 +33,7 @@ fun ReposRoute(
         onSearchQueryChanged = viewModel::onSearchQueryChange,
         onRepoClick = onRepoClick,
         onLoadNextPage = { viewModel.loadNextPage() },
+        onRefresh = { viewModel.loadRepositories() },
         modifier = modifier
     )
 }

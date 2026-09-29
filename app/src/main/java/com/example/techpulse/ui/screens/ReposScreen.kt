@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -56,6 +57,7 @@ fun ReposScreen(
     onSearchQueryChanged: (String) -> Unit,
     onRepoClick: (RepositoryItem) -> Unit,
     onLoadNextPage: () -> Unit,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
@@ -103,7 +105,14 @@ fun ReposScreen(
                         CircularProgressIndicator()
                     }
                     is ReposUiState.Error -> {
-                        Text("Fehler: ${uiState.message}")
+                        Column(
+                            modifier = Modifier.align(Alignment.Center),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(text = "Fehler: Bitte überprüfen sie Ihre Verbindung.")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(onClick = onRefresh) { Text("Erneut versuchen") }
+                        }
                     }
                     is ReposUiState.Success -> {
                         if (uiState.repos.isEmpty()) {

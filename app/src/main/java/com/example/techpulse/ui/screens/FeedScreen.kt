@@ -93,7 +93,7 @@ fun FeedScreen(
                         modifier = Modifier.align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = uiState.message)
+                        Text(text = "Fehler: Bitte überprüfen sie Ihre Verbindung.")
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(onClick = onRefresh) { Text("Erneut versuchen") }
                     }
